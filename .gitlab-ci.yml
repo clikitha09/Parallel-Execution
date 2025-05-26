@@ -1,0 +1,29 @@
+variables:
+  BROWSERSTACK_USERNAME: "cherupally_likitha_4v9iW5"
+  BROWSERSTACK_ACCESS_KEY: "fvb1mFPtZTKn2BQz1FZe"
+  # Set to true when using Local.
+  BROWSERSTACK_LOCAL: "false"
+  # Set when using multiple Local instances.
+  BROWSERSTACK_LOCAL_IDENTIFIER: "IDENTIFIER_NAME"
+  # Set an appropriate build name as a best practice. This helps group tests under the same name for better visibility in the Automate dashboard.
+  BROWSERSTACK_BUILD_NAME: "BUILD_NAME"
+
+  before_script:
+    # Download the browserstack binary file
+    - wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip"
+    #For OS X systems, use the following command
+    #- wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-darwin-x64.zip"
+    # Unzip the BrowserStack Local binary file
+    - unzip BrowserStackLocal-linux-x64.zip
+    # Run the file with your access key
+    - ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY --daemon start
+
+    #For Windows machine - Download and start the browserstack binary file .
+    - wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-win32.zip"
+    - powershell.exe D:\BrowserStackLocal.exe
+
+  test:
+    script:
+      - <mvn clean test -DsuiteXmlFile=testng-browserstack.xml>
+      - ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY --daemon stop
+
